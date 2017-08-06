@@ -1,0 +1,9 @@
+<md-card style="max-width: 600px;margin: 16px">
+  <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)" style="flex-direction: column">
+    <md-input-container style="flex: auto">
+      <input name="pathTool" placeholder="Tool Path" [(ngModel)]="toolPath" mdInput>
+    </md-input-container>
+    
+    <button type="submit" md-raised-button color="primary">UPDATE</button>
+  </form>
+</md-card>

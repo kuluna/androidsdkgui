@@ -1,25 +1,8 @@
-import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 
 @Component({
-  selector: 'App',
-  template:
-  `<div>
-    <h2>Welcome to {{name}} Angular2!</h2>
-  </div>`
+  selector: 'app',
+  templateUrl: './app.component.html',
+  styleUrls: ['./app.component.css']
 })
-export class AppComponent implements OnInit {
-  public readonly name = 'electron-forge';
-
-  ngOnInit(): void {
-    console.log('component initialized');
-  }
-}
-
-@NgModule({
-  imports: [BrowserModule],
-  declarations: [AppComponent],
-  bootstrap: [AppComponent]
-})
-export class AppModule { }
+export class AppComponent {}

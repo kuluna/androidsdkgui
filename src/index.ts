@@ -7,12 +7,12 @@ let mainWindow: Electron.BrowserWindow | null;
 
 const isDevMode = process.execPath.match(/[\\/]electron/);
 
-if (isDevMode) enableLiveReload();
+if (isDevMode) { enableLiveReload(); }
 
 const createWindow = async () => {
   // Create the browser window.
   mainWindow = new BrowserWindow({
-    width: 800,
+    width: 800, minWidth: 480,
     height: 600,
   });
 
