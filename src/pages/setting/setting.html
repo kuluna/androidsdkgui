@@ -1,9 +1,14 @@
-<md-card style="max-width: 600px;margin: 16px">
-  <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)" style="flex-direction: column">
-    <md-input-container style="flex: auto">
-      <input name="pathTool" placeholder="Tool Path" [(ngModel)]="toolPath" mdInput>
-    </md-input-container>
-    
-    <button type="submit" md-raised-button color="primary">UPDATE</button>
+<md-card style="margin: 16px;">
+  <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)">
+    <md-card-content fxLayout="column">
+        <md-input-container fxFlex>
+          <input name="toolPath" required placeholder="Tool Path" [(ngModel)]="toolPath" mdInput>
+          <md-error>Invalid Android SDK Tool directory path.</md-error>
+        </md-input-container>
+      </md-card-content>
+      <md-card-actions fxLayout="row" fxLayoutAlign="end center">
+        <div [hidden]="!updating"><md-spinner style="width: 24px;height: 24px"></md-spinner></div>
+        <button type="submit" [disabled]="settingForm.form.invalid || updating" md-raised-button color="primary">UPDATE</button>
+      </md-card-actions>
   </form>
 </md-card>
