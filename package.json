@@ -63,8 +63,8 @@
     "electron-devtools-installer": "^2.0.1",
     "electron-settings": "^3.1.1",
     "reflect-metadata": "^0.1.9",
-    "tslib": "^1.4.0",
-    "zone.js": "^0.7.4"
+    "tslib": "^1.7.1",
+    "zone.js": "^0.8.16"
   },
   "devDependencies": {
     "@types/electron": "^1.4.30",
