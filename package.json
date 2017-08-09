@@ -9,7 +9,8 @@
     "start": "npm run build-theme && electron-forge start",
     "package": "npm run build-theme && electron-forge package",
     "make": "npm run build-theme && electron-forge make",
-    "lint": "tslint src"
+    "lint": "tslint src",
+    "test": "mocha --compilers ts:ts-node/register"
   },
   "keywords": [],
   "author": "kuluna",
@@ -69,12 +70,15 @@
   "devDependencies": {
     "@types/electron": "^1.4.30",
     "@types/electron-settings": "^3.0.0",
+    "@types/mocha": "^2.2.41",
     "babel-plugin-transform-async-to-generator": "^6.24.1",
     "babel-preset-env": "^1.6.0",
     "babel-preset-react": "^6.24.1",
     "electron-forge": "~3.1.1",
     "electron-prebuilt-compile": "1.6.11",
+    "mocha": "^3.5.0",
     "node-sass": "^4.5.3",
+    "ts-node": "^3.3.0",
     "tslint": "^5.5.0",
     "typescript": "^2.4.2"
   }

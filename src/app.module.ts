@@ -7,8 +7,6 @@ import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 
-import { SdkManagerService } from './services/sdkmanager.service';
-
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
 import { SdkComponent } from './pages/sdk/sdk.component';
@@ -46,9 +44,7 @@ export class AppRoutingModule {}
     SdkComponent,
     SettingComponent
   ],
-  providers: [
-    SdkManagerService
-  ],
+  providers: [],
   bootstrap: [AppComponent]
 })
 export class AppModule {}
