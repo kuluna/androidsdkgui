@@ -8,6 +8,8 @@ function get() {
 describe('sdkmanager', () => {
   it('parse list', () => {
     const stdout = get();
-    sdkManager.parseList(stdout);
+    const packages = sdkManager.parseList(stdout);
+
+    console.log(JSON.stringify(packages, null, 2));
   });
 });
