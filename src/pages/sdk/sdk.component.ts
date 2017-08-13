@@ -1,14 +1,22 @@
 import { Component, OnInit } from '@angular/core';
-import { exec } from 'child_process';
+import * as settings from 'electron-settings';
+
+import * as sdkManager from '../../services/sdkmanager';
 
 @Component({
   selector: 'app-sdk',
   templateUrl: './pages/sdk/sdk.html'
 })
 export class SdkComponent implements OnInit {
-  ngOnInit() {
-    exec('echo hello!', (error, stdout, stderr) => {
-      console.log(stdout);
-    });
+  packages: sdkManager.Package[] = [];
+
+  async ngOnInit() {
+    const values: any = settings.get('AppSetting', { toolPath: '' });
+    if (!values.toolPath) {
+      return;
+    }
+
+    const list = await sdkManager.getListAsync(values.toolPath);
+    this.packages = sdkManager.parseList(list.out);
   }
 }

@@ -1,11 +1,14 @@
 import * as Path from 'path';
 
-import { execFileAsync } from './execpromise';
+import { execFileAsync, Standard } from './execpromise';
 
-export async function checkAsync(toolPath: string) {
+export async function getListAsync(toolPath: string): Promise<Standard> {
   const normalize = Path.join(toolPath, 'bin', 'sdkmanager');
-  const std = await execFileAsync(`${normalize}.bat`, ['--list']);
+  return await execFileAsync(`${normalize}.bat`, ['--list', '--verbose']);
+}
 
+export async function checkAsync(toolPath: string): Promise<boolean> {
+  const std = await getListAsync(toolPath);
   return /done\r?\n?/.test(std.out);
 }
 
@@ -17,7 +20,9 @@ export function parseList(stdout: string) {
 
   // skip
   for (; pointer <= lines.length; pointer += 1) {
-    if (lines[pointer].startsWith('Installed packages:')) {
+    if (lines[pointer].startsWith('done')) {
+      return packages;
+    } else if (lines[pointer].startsWith('Installed packages:')) {
       pointer += 2;
       break;
     }
@@ -25,7 +30,9 @@ export function parseList(stdout: string) {
 
   // installed packages
   for (; pointer <= lines.length; pointer += 5) {
-    if (lines[pointer].startsWith('Available Packages:')) {
+    if (lines[pointer].startsWith('done')) {
+      return packages;
+    } else if (lines[pointer].startsWith('Available Packages:')) {
       pointer += 2;
       break;
     }
@@ -42,7 +49,9 @@ export function parseList(stdout: string) {
 
   // available packages
   for (; pointer <= lines.length; ) {
-    if (lines[pointer].startsWith('Available Updates:')) {
+    if (lines[pointer].startsWith('done')) {
+      return packages;
+    } else if (lines[pointer].startsWith('Available Updates:')) {
       pointer += 2;
       break;
     }
