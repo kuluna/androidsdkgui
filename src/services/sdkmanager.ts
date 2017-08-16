@@ -46,7 +46,7 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.installed;
-    p.name = lines[pointer];
+    [p.name, p.category] = parsePackageName(lines[pointer]);
     p.description = lines[pointer + 1].slice(24);
     p.version = lines[pointer + 2].slice(24);
     p.installedLocation = lines[pointer + 3].slice(24);
@@ -65,10 +65,7 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.available;
-    const names = lines[pointer].split(';');
-    p.category = names[0];
-    p.name = lines[pointer];
-
+    [p.name, p.category] = parsePackageName(lines[pointer]);
     p.description = lines[pointer + 1].slice(24);
     p.version = lines[pointer + 2].slice(24);
 
@@ -90,7 +87,7 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.updateable;
-    p.name = lines[pointer];
+    [p.name, p.category] = parsePackageName(lines[pointer]);
     p.version = lines[pointer + 2].slice(20);
     packages.push(p);
 
@@ -103,6 +100,11 @@ export function parseList(stdout: string) {
   }
 
   return packages;
+}
+
+function parsePackageName(name: string): [string, string] {
+  const names = name.split(';');
+  return [names[1] ? names.slice(1).join('; ') : names[0], names[0]];
 }
 
 export class Package {
