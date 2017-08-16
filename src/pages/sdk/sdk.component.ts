@@ -17,7 +17,7 @@ export class SdkComponent implements OnInit {
       return;
     }
 
-    const list = await getListAsync(values.toolPath);
+    const list = await getListAsync(values);
     this.packages = parseList(list.out);
 
     this.updating = false;

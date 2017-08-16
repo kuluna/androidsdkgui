@@ -1,9 +1,20 @@
 <md-card style="margin: 16px;">
   <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)">
     <md-card-content fxLayout="column">
-        <md-input-container fxFlex>
-          <input name="toolPath" required placeholder="Tool Path" [(ngModel)]="toolPath" mdInput>
+        <md-input-container>
+          <input name="toolPath" required placeholder="Tool Path" [(ngModel)]="appSetting.toolPath" mdInput>
           <md-error>Invalid Android SDK Tool directory path.</md-error>
+        </md-input-container>
+
+        <div fxLayout="column" style="margin: 16px 0">
+          <md-checkbox name="useProxy" [(ngModel)]="appSetting.useProxy">Use HTTP Proxy</md-checkbox>
+          <strong>(Android SDK) Authentication proxy does not support.</strong>
+        </div>
+        <md-input-container>
+          <input name="proxy" placeholder="HTTP proxy" [(ngModel)]="appSetting.proxy" [disabled]="!appSetting.useProxy" mdInput>
+        </md-input-container>
+        <md-input-container>
+          <input type="number" min="0" name="port" placeholder="Proxy port" [(ngModel)]="appSetting.port" [disabled]="!appSetting.useProxy" mdInput>
         </md-input-container>
       </md-card-content>
       <md-card-actions fxLayout="row" fxLayoutAlign="end center">

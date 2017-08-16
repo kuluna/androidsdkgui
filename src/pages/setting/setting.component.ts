@@ -10,25 +10,33 @@ import { AppSetting } from '../../models/models';
   templateUrl: './pages/setting/setting.html'
 })
 export class SettingComponent implements OnInit {
-  toolPath = '';
+  appSetting: AppSetting = new AppSetting();
   updating = false;
 
   constructor(private snackBar: MdSnackBar) {}
 
   ngOnInit() {
     const values: any = settings.get('AppSetting', { toolPath: '' });
-    this.toolPath = values.toolPath;
+    this.appSetting.toolPath = values.toolPath;
+    this.appSetting.useProxy = values.useProxy;
+    this.appSetting.proxy = values.proxy;
+    this.appSetting.port = values.port;
   }
 
-  async onSubmit(value: AppSetting) {
+  async onSubmit(values: AppSetting) {
     this.updating = true;
 
     // run shell 'sdkmanager --list'
     // if last stdout string 'done', it is ok
-    if (await sdkManager.checkAsync(value.toolPath)) {
-        settings.set('AppSetting', { toolPath: value.toolPath });
-        this.snackBar.open('Update!', undefined, { duration: 1500 });
-
+    if (await sdkManager.checkAsync(values)) {
+      const appSetting = {
+        toolPath: values.toolPath,
+        useProxy: values.useProxy,
+        proxy: values.proxy,
+        port: values.port
+      };
+      settings.set('AppSetting', appSetting);
+      this.snackBar.open('Update!', undefined, { duration: 1500 });
     } else {
       this.snackBar.open('Error!');
     }

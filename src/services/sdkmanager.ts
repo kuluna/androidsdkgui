@@ -1,14 +1,21 @@
 import * as Path from 'path';
 
+import { AppSetting } from '../models/models';
 import { execFileAsync, Standard } from './execpromise';
 
-export async function getListAsync(toolPath: string): Promise<Standard> {
-  const normalize = Path.join(toolPath, 'bin', 'sdkmanager');
-  return await execFileAsync(`${normalize}.bat`, ['--list', '--verbose']);
+export async function getListAsync(sdkSetting: AppSetting): Promise<Standard> {
+  const normalize = Path.join(sdkSetting.toolPath, 'bin', 'sdkmanager');
+  const args = ['--list', '--verbose'];
+  if (sdkSetting.useProxy) {
+    args.push('--proxy=http');
+    args.push(`--proxy_host=${sdkSetting.proxy}`);
+    args.push(`--proxy_port=${sdkSetting.port}`);
+  }
+  return await execFileAsync(`${normalize}.bat`, args);
 }
 
-export async function checkAsync(toolPath: string): Promise<boolean> {
-  const std = await getListAsync(toolPath);
+export async function checkAsync(sdkSetting: AppSetting): Promise<boolean> {
+  const std = await getListAsync(sdkSetting);
   return /done\r?\n?/.test(std.out);
 }
 
