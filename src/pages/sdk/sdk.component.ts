@@ -1,14 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import * as settings from 'electron-settings';
 
-import * as sdkManager from '../../services/sdkmanager';
+import { getListAsync, parseList, Package } from '../../services/sdkmanager';
 
 @Component({
   selector: 'app-sdk',
   templateUrl: './pages/sdk/sdk.html'
 })
 export class SdkComponent implements OnInit {
-  packages: sdkManager.Package[] = [];
+  packages: Package[] = [];
+  updating = true;
 
   async ngOnInit() {
     const values: any = settings.get('AppSetting', { toolPath: '' });
@@ -16,7 +17,9 @@ export class SdkComponent implements OnInit {
       return;
     }
 
-    const list = await sdkManager.getListAsync(values.toolPath);
-    this.packages = sdkManager.parseList(list.out);
+    const list = await getListAsync(values.toolPath);
+    this.packages = parseList(list.out);
+
+    this.updating = false;
   }
 }

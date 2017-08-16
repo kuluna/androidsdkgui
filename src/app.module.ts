@@ -1,11 +1,14 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CdkTableModule } from '@angular/cdk';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpModule } from '@angular/http';
 import { MaterialModule } from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
+
+import { GroupByPipe } from './services/groupby_pipe';
 
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
@@ -33,6 +36,7 @@ export class AppRoutingModule {}
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
+    CdkTableModule,
     FormsModule,
     FlexLayoutModule,
     HttpModule,
@@ -41,6 +45,7 @@ export class AppRoutingModule {}
   declarations: [
     AppComponent,
     AvdComponent,
+    GroupByPipe,
     SdkComponent,
     SettingComponent
   ],
