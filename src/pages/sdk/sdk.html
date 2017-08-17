@@ -4,7 +4,7 @@
 </div>
 
 <ng-template #list>
-  <md-card>
+  <md-card style="margin: 16px">
     <md-nav-list>
         <div *ngFor="let category of packages | groupBy: 'category'">
           <h2>{{category.key}}</h2>
