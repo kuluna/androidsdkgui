@@ -1,14 +1,13 @@
 {
   "name": "androidsdkgui",
   "productName": "androidsdkgui",
-  "version": "1.0.0",
+  "version": "0.0.1",
   "description": "Android SDK GUI Tool",
   "main": "src/index.ts",
   "scripts": {
     "build-theme": "node-sass src/theme.scss src/theme.css",
     "start": "npm run build-theme && electron-forge start",
-    "package": "npm run build-theme && electron-forge package",
-    "make": "npm run build-theme && electron-forge make",
+    "make": "npm run build-theme && electron-forge make --all",
     "lint": "tslint src",
     "test": "mocha --compilers ts:ts-node/register"
   },

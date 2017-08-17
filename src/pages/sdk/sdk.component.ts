@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MdDialog } from '@angular/material';
+import { Router } from '@angular/router';
 import * as settings from 'electron-settings';
 
 import { AppSetting } from '../../models/models';
@@ -14,11 +15,13 @@ export class SdkComponent implements OnInit {
   updating = true;
   sdkSetting: AppSetting;
 
-  constructor(private dialog: MdDialog) {}
+  constructor(private dialog: MdDialog,
+              private router: Router) {}
 
   async ngOnInit() {
     const values: any = settings.get('AppSetting', new AppSetting());
     if (!values.toolPath) {
+      this.router.navigate(['./setting']);
       return;
     }
     this.sdkSetting = values as AppSetting;
