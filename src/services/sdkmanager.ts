@@ -11,7 +11,7 @@ export async function getListAsync(sdkSetting: AppSetting): Promise<Standard> {
 
 export async function checkAsync(sdkSetting: AppSetting): Promise<boolean> {
   const std = await getListAsync(sdkSetting);
-  return /^done\r?\n?$/.test(std.out);
+  return /done\r?\n?$/.test(std.out);
 }
 
 export function parseList(stdout: string) {
@@ -105,7 +105,7 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
   console.log(std.out);
   console.log(std.err);
 
-  return /^done\r?\n?$/.test(std.out);
+  return /done\r?\n?$/.test(std.out);
 }
 
 async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
