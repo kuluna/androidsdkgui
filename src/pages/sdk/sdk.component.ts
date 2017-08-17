@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { MdDialog } from '@angular/material';
 import * as settings from 'electron-settings';
 
-import { getListAsync, parseList, Package } from '../../services/sdkmanager';
+import { AppSetting } from '../../models/models';
+import { getListAsync, installPackageAsync, InstallStates, parseList, Package } from '../../services/sdkmanager';
 
 @Component({
   selector: 'app-sdk',
@@ -10,16 +12,42 @@ import { getListAsync, parseList, Package } from '../../services/sdkmanager';
 export class SdkComponent implements OnInit {
   packages: Package[] = [];
   updating = true;
+  sdkSetting: AppSetting;
+
+  constructor(private dialog: MdDialog) {}
 
   async ngOnInit() {
-    const values: any = settings.get('AppSetting', { toolPath: '' });
+    const values: any = settings.get('AppSetting', new AppSetting());
     if (!values.toolPath) {
       return;
     }
+    this.sdkSetting = values as AppSetting;
 
-    const list = await getListAsync(values);
+    const list = await getListAsync(this.sdkSetting);
     this.packages = parseList(list.out);
 
     this.updating = false;
   }
+
+  async install(p: Package) {
+    if (p.state == InstallStates.available) {
+      const installing = this.dialog.open(InstallDialogComponent, { disableClose: true });
+      await installPackageAsync(this.sdkSetting, p.rawName);
+      installing.close();
+      // reload
+      await this.ngOnInit();
+    }
+  }
 }
+
+@Component({
+  selector: 'app-install-dialog',
+  template:
+  `
+  <div fxLayout="column" fxLayoutAlign=" center">
+    <h2>Installing...</h2>
+    <md-progress-bar mode="indeterminate"></md-progress-bar>
+  </div>
+  `
+})
+export class InstallDialogComponent {}

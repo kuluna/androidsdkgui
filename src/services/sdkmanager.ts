@@ -3,20 +3,15 @@ import * as Path from 'path';
 import { AppSetting } from '../models/models';
 import { execFileAsync, Standard } from './execpromise';
 
+const isWindows = process.platform === 'win32';
+
 export async function getListAsync(sdkSetting: AppSetting): Promise<Standard> {
-  const normalize = Path.join(sdkSetting.toolPath, 'bin', 'sdkmanager');
-  const args = ['--list', '--verbose'];
-  if (sdkSetting.useProxy) {
-    args.push('--proxy=http');
-    args.push(`--proxy_host=${sdkSetting.proxy}`);
-    args.push(`--proxy_port=${sdkSetting.port}`);
-  }
-  return await execFileAsync(`${normalize}.bat`, args);
+  return await execSdkManagerAsync(sdkSetting, ['--list']);
 }
 
 export async function checkAsync(sdkSetting: AppSetting): Promise<boolean> {
   const std = await getListAsync(sdkSetting);
-  return /done\r?\n?/.test(std.out);
+  return /^done\r?\n?$/.test(std.out);
 }
 
 export function parseList(stdout: string) {
@@ -46,7 +41,8 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.installed;
-    [p.name, p.category] = parsePackageName(lines[pointer]);
+    p.rawName = lines[pointer];
+    [p.name, p.category] = parsePackageName(p.rawName);
     p.description = lines[pointer + 1].slice(24);
     p.version = lines[pointer + 2].slice(24);
     p.installedLocation = lines[pointer + 3].slice(24);
@@ -65,7 +61,8 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.available;
-    [p.name, p.category] = parsePackageName(lines[pointer]);
+    p.rawName = lines[pointer];
+    [p.name, p.category] = parsePackageName(p.rawName);
     p.description = lines[pointer + 1].slice(24);
     p.version = lines[pointer + 2].slice(24);
 
@@ -87,7 +84,8 @@ export function parseList(stdout: string) {
 
     const p = new Package();
     p.state = InstallStates.updateable;
-    [p.name, p.category] = parsePackageName(lines[pointer]);
+    p.rawName = lines[pointer];
+    [p.name, p.category] = parsePackageName(p.rawName);
     p.version = lines[pointer + 2].slice(20);
     packages.push(p);
 
@@ -102,6 +100,31 @@ export function parseList(stdout: string) {
   return packages;
 }
 
+export async function installPackageAsync(sdkSetting: AppSetting, packageRawName: string) {
+  const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`]);
+  console.log(std.out);
+  console.log(std.err);
+
+  return /^done\r?\n?$/.test(std.out);
+}
+
+async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
+  let file = Path.join(sdkSetting.toolPath, 'bin', 'sdkmanager');
+  if (isWindows) {
+    file += '.bat';
+  }
+
+  const commonArgs = ['--verbose'];
+  if (sdkSetting.useProxy) {
+    commonArgs.push('--proxy=http');
+    commonArgs.push(`--proxy_host=${sdkSetting.proxy}`);
+    commonArgs.push(`--proxy_port=${sdkSetting.port}`);
+  }
+
+  console.log(`exec: ${file} ${commonArgs.concat(args).join(' ')}`);
+  return await execFileAsync(file, commonArgs.concat(args));
+}
+
 function parsePackageName(name: string): [string, string] {
   const names = name.split(';');
   return [names[1] ? names.slice(1).join('; ') : names[0], names[0]];
@@ -110,6 +133,7 @@ function parsePackageName(name: string): [string, string] {
 export class Package {
   category: string;
   name: string;
+  rawName: string;
   details: string[] | null;
   description: string;
   version: string;

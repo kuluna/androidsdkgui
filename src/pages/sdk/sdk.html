@@ -8,7 +8,7 @@
     <md-nav-list>
         <div *ngFor="let category of packages | groupBy: 'category'">
           <h2>{{category.key}}</h2>
-          <md-list-item *ngFor="let package of category.value">
+          <md-list-item *ngFor="let package of category.value" (click)="install(package)">
             <span fxFlex>{{package.name}}</span>
             <span>{{package.version}}</span>
             <span>{{package.state}}</span>

@@ -12,7 +12,7 @@ import { GroupByPipe } from './services/groupby_pipe';
 
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
-import { SdkComponent } from './pages/sdk/sdk.component';
+import { InstallDialogComponent, SdkComponent } from './pages/sdk/sdk.component';
 import { SettingComponent } from './pages/setting/setting.component';
 
 // ----------------------------------
@@ -46,8 +46,12 @@ export class AppRoutingModule {}
     AppComponent,
     AvdComponent,
     GroupByPipe,
+    InstallDialogComponent,
     SdkComponent,
     SettingComponent
+  ],
+  entryComponents: [
+    InstallDialogComponent
   ],
   providers: [],
   bootstrap: [AppComponent]
