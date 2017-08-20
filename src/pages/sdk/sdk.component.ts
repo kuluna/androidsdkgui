@@ -20,7 +20,7 @@ export class SdkComponent implements OnInit {
 
   async ngOnInit() {
     const values: any = settings.get('AppSetting', new AppSetting());
-    if (!values.toolPath) {
+    if (!values.sdkRootPath) {
       this.router.navigate(['./setting']);
       return;
     }

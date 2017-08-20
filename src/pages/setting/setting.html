@@ -2,8 +2,8 @@
   <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)">
     <md-card-content fxLayout="column">
         <md-input-container>
-          <input name="toolPath" required placeholder="Tool Path" [(ngModel)]="appSetting.toolPath" mdInput>
-          <md-error>Invalid Android SDK Tool directory path.</md-error>
+          <input name="sdkRootPath" required placeholder="SDK Root Path" [(ngModel)]="appSetting.sdkRootPath" mdInput>
+          <md-error>Invalid Android SDK directory path.</md-error>
         </md-input-container>
 
         <div fxLayout="column" style="margin: 16px 0">

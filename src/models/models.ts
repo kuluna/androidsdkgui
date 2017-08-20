@@ -1,6 +1,6 @@
 
 export class AppSetting {
-  toolPath: string;
+  sdkRootPath: string;
   useProxy: boolean;
   proxy: string | null;
   port: number | null;

@@ -16,8 +16,8 @@ export class SettingComponent implements OnInit {
   constructor(private snackBar: MdSnackBar) {}
 
   ngOnInit() {
-    const values: any = settings.get('AppSetting', { toolPath: '' });
-    this.appSetting.toolPath = values.toolPath;
+    const values: any = settings.get('AppSetting', new AppSetting());
+    this.appSetting.sdkRootPath = values.sdkRootPath;
     this.appSetting.useProxy = values.useProxy;
     this.appSetting.proxy = values.proxy;
     this.appSetting.port = values.port;
@@ -30,7 +30,7 @@ export class SettingComponent implements OnInit {
     // if last stdout string 'done', it is ok
     if (await sdkManager.checkAsync(values)) {
       const appSetting = {
-        toolPath: values.toolPath,
+        sdkRootPath: values.sdkRootPath,
         useProxy: values.useProxy,
         proxy: values.proxy,
         port: values.port

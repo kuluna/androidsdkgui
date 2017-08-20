@@ -109,7 +109,7 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
 }
 
 async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
-  let file = Path.join(sdkSetting.toolPath, 'bin', 'sdkmanager');
+  let file = Path.join(sdkSetting.sdkRootPath, 'tools', 'bin', 'sdkmanager');
   if (isWindows) {
     file += '.bat';
   }
