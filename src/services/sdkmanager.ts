@@ -1,3 +1,4 @@
+import { copy, remove } from 'fs-extra';
 import * as Path from 'path';
 
 import { AppSetting } from '../models/models';
@@ -116,9 +117,16 @@ export function parseList(stdout: string) {
  * @param packageRawName package name
  */
 export async function installPackageAsync(sdkSetting: AppSetting, packageRawName: string) {
-  const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`]);
+// before copy tools directory
+  const tempDir = Path.join(sdkSetting.sdkRootPath, 'temp');
+  await copy(Path.join(sdkSetting.sdkRootPath, 'tools'), tempDir);
+
+  const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`], true);
   console.log(std.out);
-  console.log(std.err);
+  console.warn(std.err);
+
+  // remove temp dir
+  await remove(tempDir);
 
   return /done\r?\n?$/.test(std.out);
 }
@@ -128,8 +136,8 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
  * @param sdkSetting SDK setting value
  * @param args sdkmanager arguments
  */
-async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
-  let file = Path.join(sdkSetting.sdkRootPath, 'tools', 'bin', 'sdkmanager');
+async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTmpToolsDir?: boolean) {
+  let file = Path.join(sdkSetting.sdkRootPath, useTmpToolsDir ? 'temp' : 'tools' , 'bin', 'sdkmanager');
   if (isWindows) {
     file += '.bat';
   }
@@ -142,7 +150,9 @@ async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
   }
 
   console.log(`exec: ${file} ${commonArgs.concat(args).join(' ')}`);
-  return await execFileAsync(file, commonArgs.concat(args));
+  const stdOut = await execFileAsync(file, commonArgs.concat(args));
+
+  return stdOut;
 }
 
 function parsePackageName(name: string): [string, string] {
