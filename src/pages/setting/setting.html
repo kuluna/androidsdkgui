@@ -1,21 +1,21 @@
 <md-card style="margin: 16px;">
   <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)">
     <md-card-content fxLayout="column">
-        <md-input-container>
+        <md-form-field class="fill-width">
           <input name="sdkRootPath" required placeholder="SDK Root Path" [(ngModel)]="appSetting.sdkRootPath" mdInput>
           <md-error>Invalid Android SDK directory path.</md-error>
-        </md-input-container>
+        </md-form-field>
 
         <div fxLayout="column" style="margin: 16px 0">
           <md-checkbox name="useProxy" [(ngModel)]="appSetting.useProxy">Use HTTP Proxy</md-checkbox>
           <strong>(Android SDK) Authentication proxy does not support.</strong>
         </div>
-        <md-input-container>
+        <md-form-field class="fill-width">
           <input name="proxy" placeholder="HTTP proxy" [(ngModel)]="appSetting.proxy" [disabled]="!appSetting.useProxy" mdInput>
-        </md-input-container>
-        <md-input-container>
+        </md-form-field>
+        <md-form-field class="fill-width">
           <input type="number" min="0" name="port" placeholder="Proxy port" [(ngModel)]="appSetting.port" [disabled]="!appSetting.useProxy" mdInput>
-        </md-input-container>
+        </md-form-field>
       </md-card-content>
       <md-card-actions fxLayout="row" fxLayoutAlign="end center">
         <div [hidden]="!updating"><md-spinner style="width: 24px;height: 24px"></md-spinner></div>

@@ -7,7 +7,8 @@ import { AppSetting } from '../../models/models';
 
 @Component({
   selector: 'app-setting',
-  templateUrl: './pages/setting/setting.html'
+  templateUrl: './pages/setting/setting.html',
+  styleUrls: ['./pages/setting/setting.css']
 })
 export class SettingComponent implements OnInit {
   appSetting: AppSetting = new AppSetting();
