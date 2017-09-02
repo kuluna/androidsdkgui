@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CdkTableModule } from '@angular/cdk';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpModule } from '@angular/http';
@@ -36,7 +35,6 @@ export class AppRoutingModule {}
     AppRoutingModule,
     BrowserAnimationsModule,
     BrowserModule,
-    CdkTableModule,
     FormsModule,
     FlexLayoutModule,
     HttpModule,
