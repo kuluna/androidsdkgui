@@ -29,7 +29,7 @@ export class SettingComponent implements OnInit {
 
     // run shell 'sdkmanager --list'
     // if last stdout string 'done', it is ok
-    if (await sdkManager.checkAsync(values)) {
+    if (await sdkManager.checkDoneAsync(values)) {
       const appSetting = {
         sdkRootPath: values.sdkRootPath,
         useProxy: values.useProxy,

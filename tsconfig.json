@@ -1,5 +1,6 @@
 {
   "compilerOptions": {
+    "baseUrl": "src",
     "removeComments": false,
     "preserveConstEnums": true,
     "sourceMap": true,

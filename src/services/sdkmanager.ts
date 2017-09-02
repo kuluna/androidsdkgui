@@ -5,15 +5,25 @@ import { execFileAsync, Standard } from './execpromise';
 
 const isWindows = process.platform === 'win32';
 
+/**
+ * exec `sdkmanager --list`
+ * @param sdkSetting SDK Setting values
+ */
 export async function getListAsync(sdkSetting: AppSetting): Promise<Standard> {
   return await execSdkManagerAsync(sdkSetting, ['--list']);
 }
 
-export async function checkAsync(sdkSetting: AppSetting): Promise<boolean> {
+/**
+ * check done by sdkmanager.
+ */
+export async function checkDoneAsync(sdkSetting: AppSetting): Promise<boolean> {
   const std = await getListAsync(sdkSetting);
   return /done\r?\n?$/.test(std.out);
 }
 
+/**
+ * parse sdkmanager get list
+ */
 export function parseList(stdout: string) {
   const packages: Package[] = [];
 
@@ -100,6 +110,11 @@ export function parseList(stdout: string) {
   return packages;
 }
 
+/**
+ * exec `sdkmanager --install [package]`
+ * @param sdkSetting SDK setting value
+ * @param packageRawName package name
+ */
 export async function installPackageAsync(sdkSetting: AppSetting, packageRawName: string) {
   const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`]);
   console.log(std.out);
@@ -108,6 +123,11 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
   return /done\r?\n?$/.test(std.out);
 }
 
+/**
+ * execute for `sdkmanager`
+ * @param sdkSetting SDK setting value
+ * @param args sdkmanager arguments
+ */
 async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[]) {
   let file = Path.join(sdkSetting.sdkRootPath, 'tools', 'bin', 'sdkmanager');
   if (isWindows) {
