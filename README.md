@@ -35,7 +35,7 @@ Using Electron, it should work on any platforms.
   - [x] Show lists
   - [x] Install
   - [ ] Delete
-  - [ ] **Update tools**
+  - [x] Update tools
   - [ ] Cancelling install/update
   - [ ] Check licenses
 - [ ] AVD
