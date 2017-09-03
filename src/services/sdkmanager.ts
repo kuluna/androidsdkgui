@@ -142,7 +142,7 @@ async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTm
     file += '.bat';
   }
 
-  const commonArgs = ['--verbose'];
+  const commonArgs = ['--verbose', `--sdk_root=${sdkSetting.sdkRootPath}`];
   if (sdkSetting.useProxy) {
     commonArgs.push('--proxy=http');
     commonArgs.push(`--proxy_host=${sdkSetting.proxy}`);
