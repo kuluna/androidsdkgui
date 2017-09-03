@@ -1,10 +1,22 @@
-import { copy, remove } from 'fs-extra';
+import { copy, readdir, remove } from 'fs-extra';
 import * as Path from 'path';
 
 import { AppSetting } from '../models/models';
 import { execFileAsync, Standard } from './execpromise';
 
 const isWindows = process.platform === 'win32';
+
+/**
+ * check agree android sdk license
+ * @param sdkSetting SDK Setting values
+ */
+export async function checkLicenseAsync(sdkSetting: AppSetting): Promise<boolean> {
+  const licensePath = Path.join(sdkSetting.sdkRootPath, 'licenses');
+  // read license files
+  const files = await readdir(licensePath).catch(e => []);
+  // at least android sdk license exists
+  return files.findIndex(file => /^android-sdk-license$/.test(file)) >= 0;
+}
 
 /**
  * exec `sdkmanager --list`
@@ -131,16 +143,21 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
   return /done\r?\n?$/.test(std.out);
 }
 
+export function getSdkManagerPath(sdkSetting: AppSetting, useTmpToolsDir?: boolean) {
+  let file = Path.join(sdkSetting.sdkRootPath, useTmpToolsDir ? 'temp' : 'tools' , 'bin', 'sdkmanager');
+  if (isWindows) {
+    file += '.bat';
+  }
+  return file;
+}
+
 /**
  * execute for `sdkmanager`
  * @param sdkSetting SDK setting value
  * @param args sdkmanager arguments
  */
 async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTmpToolsDir?: boolean) {
-  let file = Path.join(sdkSetting.sdkRootPath, useTmpToolsDir ? 'temp' : 'tools' , 'bin', 'sdkmanager');
-  if (isWindows) {
-    file += '.bat';
-  }
+  const file = getSdkManagerPath(sdkSetting, useTmpToolsDir);
 
   const commonArgs = ['--verbose', `--sdk_root=${sdkSetting.sdkRootPath}`];
   if (sdkSetting.useProxy) {

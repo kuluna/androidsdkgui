@@ -17,10 +17,7 @@
     "module": "commonjs",
     "moduleResolution": "node",
     "pretty": true,
-    "target": "es5",
-    "lib": [
-      "es2015"
-    ],
+    "target": "es2015",
     "outDir": "dist",
     "emitDecoratorMetadata": true
   },

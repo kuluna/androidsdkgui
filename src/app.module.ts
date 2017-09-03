@@ -12,7 +12,7 @@ import { GroupByPipe } from './services/groupby_pipe';
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
 import { InstallDialogComponent, SdkComponent } from './pages/sdk/sdk.component';
-import { SettingComponent } from './pages/setting/setting.component';
+import { SettingComponent, WarningLicenseDialog } from './pages/setting/setting.component';
 
 // ----------------------------------
 // App routing
@@ -46,10 +46,12 @@ export class AppRoutingModule {}
     GroupByPipe,
     InstallDialogComponent,
     SdkComponent,
-    SettingComponent
+    SettingComponent,
+    WarningLicenseDialog
   ],
   entryComponents: [
-    InstallDialogComponent
+    InstallDialogComponent,
+    WarningLicenseDialog
   ],
   providers: [],
   bootstrap: [AppComponent]
