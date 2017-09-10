@@ -63,7 +63,7 @@ export function parseList(stdout: string) {
     }
 
     const p = new Package();
-    p.state = InstallStates.installed;
+    p.state = InstallStates.Installed;
     p.rawName = lines[pointer];
     [p.name, p.category] = parsePackageName(p.rawName);
     p.description = lines[pointer + 1].slice(24);
@@ -83,7 +83,7 @@ export function parseList(stdout: string) {
     }
 
     const p = new Package();
-    p.state = InstallStates.available;
+    p.state = InstallStates.Available;
     p.rawName = lines[pointer];
     [p.name, p.category] = parsePackageName(p.rawName);
     p.description = lines[pointer + 1].slice(24);
@@ -106,7 +106,7 @@ export function parseList(stdout: string) {
     }
 
     const p = new Package();
-    p.state = InstallStates.updateable;
+    p.state = InstallStates.Updateable;
     p.rawName = lines[pointer];
     [p.name, p.category] = parsePackageName(p.rawName);
     p.version = lines[pointer + 2].slice(20);
@@ -189,7 +189,7 @@ export class Package {
 }
 
 export enum InstallStates {
-  installed = 'Installed',
-  available = 'Available',
-  updateable = 'Updateable'
+  Installed = 'Installed',
+  Available = 'Available',
+  Updateable = 'Updateable'
 }

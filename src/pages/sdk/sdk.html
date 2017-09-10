@@ -5,15 +5,17 @@
 
 <ng-template #list>
   <md-card style="margin: 16px">
-    <md-nav-list>
-        <div *ngFor="let category of packages | groupBy: 'category'">
-          <h2>{{category.key}}</h2>
-          <md-list-item *ngFor="let package of category.value" (click)="install(package)">
-            <span fxFlex>{{package.name}}</span>
+    <md-list>
+      <div *ngFor="let category of packages | groupBy: 'category'">
+        <h2>{{category.key}}</h2>
+        <md-list-item *ngFor="let package of category.value">
+          <button md-button (click)="install(package)" [disabled]="package.state !== InstallState.Available" style="width:100%">
+            <span fxFlex style="text-align:start">{{package.name}}</span>
             <span>{{package.version}}</span>
             <span>{{package.state}}</span>
-          </md-list-item>
-        </div>
-      </md-nav-list>
+          </button>
+        </md-list-item>
+      </div>
+    </md-list>
   </md-card>
 </ng-template>

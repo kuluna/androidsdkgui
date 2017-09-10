@@ -11,6 +11,7 @@ import { getListAsync, installPackageAsync, InstallStates, parseList, Package } 
   templateUrl: './pages/sdk/sdk.html'
 })
 export class SdkComponent implements OnInit {
+  InstallState = InstallStates;
   packages: Package[] = [];
   updating = true;
   sdkSetting: AppSetting;
@@ -33,7 +34,7 @@ export class SdkComponent implements OnInit {
   }
 
   async install(p: Package) {
-    if (p.state == InstallStates.available) {
+    if (p.state == InstallStates.Available) {
       const installing = this.dialog.open(InstallDialogComponent, { disableClose: true });
       await installPackageAsync(this.sdkSetting, p.rawName);
       installing.close();

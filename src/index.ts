@@ -1,4 +1,4 @@
-import { app, BrowserWindow } from 'electron';
+import { app, BrowserWindow, Menu } from 'electron';
 import { enableLiveReload } from 'electron-compile';
 
 // Keep a global reference of the window object, if you don't, the window will
@@ -55,5 +55,21 @@ app.on('activate', () => {
   }
 });
 
-// In this file you can include the rest of your app's specific main process
-// code. You can also put them in separate files and import them here.
+// menus
+const menu = Menu.buildFromTemplate([
+  {
+    label: 'Edit',
+    submenu: [
+      {role: 'undo'},
+      {role: 'redo'},
+      {type: 'separator'},
+      {role: 'cut'},
+      {role: 'copy'},
+      {role: 'paste'},
+      {role: 'pasteandmatchstyle'},
+      {role: 'delete'},
+      {role: 'selectall'}
+    ]
+  }
+]);
+// Menu.setApplicationMenu(menu);

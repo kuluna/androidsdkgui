@@ -1,6 +1,6 @@
-<md-toolbar class="fixed-header mat-elevation-z4" >
+<md-toolbar class="fixed-header mat-elevation-z4" color="primary">
   <span style="margin-right: 16px">Android SDK GUI</span>
-  <nav md-tab-nav-bar>
+  <nav md-tab-nav-bar backgroundColor="primary">
     <a md-tab-link [routerLink]="['./sdk']" routerLinkActive #sdkActive="routerLinkActive" [active]="sdkActive.isActive">SDK</a>
     <a md-tab-link [routerLink]="['./avd']" routerLinkActive #avdActive="routerLinkActive" [active]="avdActive.isActive">AVD</a>
     <a md-tab-link [routerLink]="['./setting']" routerLinkActive #settingActive="routerLinkActive" [active]="settingActive.isActive">Setting</a>
