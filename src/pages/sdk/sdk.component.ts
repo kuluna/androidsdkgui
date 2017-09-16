@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
+import { DataSource } from '@angular/cdk/collections';
 import { MdDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import * as settings from 'electron-settings';
+import { Observable } from 'rxjs/Rx';
 
 import { AppSetting } from '../../models/models';
 import { getListAsync, installPackageAsync, InstallStates, parseList, Package } from '../../services/sdkmanager';
@@ -15,11 +17,13 @@ export class SdkComponent implements OnInit {
   packages: Package[] = [];
   updating = true;
   sdkSetting: AppSetting;
+  displayedColumns = ['name', 'version', 'state'];
 
   constructor(private dialog: MdDialog,
               private router: Router) {}
 
   async ngOnInit() {
+    // load settings
     const values: any = settings.get('AppSetting', new AppSetting());
     if (!values.sdkRootPath) {
       this.router.navigate(['./setting']);
@@ -27,10 +31,15 @@ export class SdkComponent implements OnInit {
     }
     this.sdkSetting = values as AppSetting;
 
+    // get package list
     const list = await getListAsync(this.sdkSetting);
     this.packages = parseList(list.out);
 
     this.updating = false;
+  }
+
+  createDataSource(pkg: Package[]) {
+    return new PackageDataSource(pkg);
   }
 
   async install(p: Package) {
@@ -55,3 +64,15 @@ export class SdkComponent implements OnInit {
   `
 })
 export class InstallDialogComponent {}
+
+export class PackageDataSource extends DataSource<Package> {
+  constructor(private data: Package[]) {
+    super();
+  }
+
+  connect(): Observable<Package[]> {
+    return Observable.of(this.data);
+  }
+
+  disconnect() {}
+}
