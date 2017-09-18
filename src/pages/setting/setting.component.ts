@@ -68,7 +68,7 @@ export class SettingComponent implements OnInit {
     <p>License is not accepted.</p>
     <p>Can not be installed since their licenses or those of the packages they depend on were not accepted.</p>
     <code>
-      {{data.sdkManagerPath}} --license
+      {{data.sdkManagerPath}} --licenses
     </code>
   </md-dialog-content>
   <md-dialog-actions fxLayout="row" fxLayoutAlign="end ">

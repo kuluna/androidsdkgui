@@ -9,6 +9,13 @@
       <div *ngFor="let category of packages | groupBy: 'category'">
         <h2>{{category.key}}</h2>
         <md-table [dataSource]="createDataSource(category.value)" mdSort>
+          <!-- Check Column -->
+          <ng-container mdColumnDef="check">
+              <md-header-cell *mdHeaderCellDef fxFlex="10">Check</md-header-cell>
+            <md-cell *mdCellDef="let e" fxFlex="10">
+              <md-checkbox disabled [checked]="e.state === InstallState.Installed"></md-checkbox>
+            </md-cell>
+          </ng-container>
           <!-- Name Column -->
           <ng-container mdColumnDef="name">
             <md-header-cell md-sort-header *mdHeaderCellDef fxFlex="70">Name</md-header-cell>
@@ -16,28 +23,21 @@
           </ng-container>
            <!-- Version Column -->
            <ng-container mdColumnDef="version">
-            <md-header-cell md-sort-header *mdHeaderCellDef fxFlex="10">Version</md-header-cell>
+            <md-header-cell *mdHeaderCellDef fxFlex="10">Version</md-header-cell>
             <md-cell *mdCellDef="let e" fxFlex="10">{{e.version}}</md-cell>
           </ng-container>
           <!-- State Column -->
           <ng-container mdColumnDef="state">
-            <md-header-cell md-sort-header *mdHeaderCellDef fxFlex="20">State</md-header-cell>
-            <md-cell *mdCellDef="let e" fxFlex="20">{{e.state}}</md-cell>
+            <md-header-cell *mdHeaderCellDef fxFlex="10">State</md-header-cell>
+            <md-cell *mdCellDef="let e" fxFlex="10" style="text-align: center;">
+              <ng-container *ngIf="e.state === InstallState.Installed; else b">{{e.state}}</ng-container>
+              <ng-template #b><button (click)="install(e)" md-button color="accent">Install</button></ng-template>
+            </md-cell>
           </ng-container>
 
           <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
           <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
         </md-table>
-
-        <!--
-        <md-list-item *ngFor="let package of category.value">
-          <button md-button (click)="install(package)" [disabled]="package.state !== InstallState.Available" style="width:100%">
-            <span fxFlex style="text-align:start">{{package.name}}</span>
-            <span>{{package.version}}</span>
-            <span>{{package.state}}</span>
-          </button>  
-        </md-list-item>
-        -->
       </div>
     </md-list>
   </md-card>

@@ -17,7 +17,7 @@ export class SdkComponent implements OnInit {
   packages: Package[] = [];
   updating = true;
   sdkSetting: AppSetting;
-  displayedColumns = ['name', 'version', 'state'];
+  displayedColumns = ['check', 'name', 'version', 'state'];
 
   constructor(private dialog: MdDialog,
               private router: Router) {}
