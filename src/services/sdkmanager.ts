@@ -82,14 +82,17 @@ export function parseList(stdout: string) {
       break;
     }
 
-    const p = new Package();
-    p.state = InstallStates.Available;
-    p.rawName = lines[pointer];
-    [p.name, p.category] = parsePackageName(p.rawName);
-    p.description = lines[pointer + 1].slice(24);
-    p.version = lines[pointer + 2].slice(24);
+    // skip alrady installed
+    if (packages.findIndex(pkg => pkg.rawName === lines[pointer]) === -1) {
+      const p = new Package();
+      p.state = InstallStates.Available;
+      p.rawName = lines[pointer];
+      [p.name, p.category] = parsePackageName(p.rawName);
+      p.description = lines[pointer + 1].slice(24);
+      p.version = lines[pointer + 2].slice(24);
 
-    packages.push(p);
+      packages.push(p);
+    }
 
     pointer += 2;
     // skip
@@ -105,18 +108,17 @@ export function parseList(stdout: string) {
       break;
     }
 
-    const p = new Package();
-    p.state = InstallStates.Updateable;
-    p.rawName = lines[pointer];
-    [p.name, p.category] = parsePackageName(p.rawName);
-    p.version = lines[pointer + 2].slice(20);
-    packages.push(p);
+    /*
+    const upRawName = lines[pointer];
+    const upLocalVersion = lines[pointer + 2].slice(20);
+    const upRemoteVersion = lines[pointer + 2].slice(20);
 
     //skip
     pointer += 2;
     do {
       pointer += 1;
     } while (lines[pointer] && lines[pointer] === 'done');
+    */
     pointer += 1;
   }
 
@@ -129,13 +131,11 @@ export function parseList(stdout: string) {
  * @param packageRawName package name
  */
 export async function installPackageAsync(sdkSetting: AppSetting, packageRawName: string) {
-// before copy tools directory
+  // before copy tools directory
   const tempDir = Path.join(sdkSetting.sdkRootPath, 'temp');
   await copy(Path.join(sdkSetting.sdkRootPath, 'tools'), tempDir);
 
   const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`], true);
-  console.log(std.out);
-  console.warn(std.err);
 
   // remove temp dir
   await remove(tempDir);
@@ -167,9 +167,11 @@ async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTm
   }
 
   console.log(`exec: ${file} ${commonArgs.concat(args).join(' ')}`);
-  const stdOut = await execFileAsync(file, commonArgs.concat(args));
+  const std = await execFileAsync(file, commonArgs.concat(args));
+  console.log(std.out);
+  console.warn(std.err);
 
-  return stdOut;
+  return std;
 }
 
 function parsePackageName(name: string): [string, string] {
