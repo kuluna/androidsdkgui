@@ -7,11 +7,12 @@ import { HttpModule } from '@angular/http';
 import * as Material from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 
-import { GroupByPipe } from './services/groupby_pipe';
+import { GroupByPipe } from './pipes/groupby.pipe';
+import { OrderByPipe } from './pipes/orderby.pipe';
 
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
-import { InstallDialogComponent, SdkComponent } from './pages/sdk/sdk.component';
+import { InstallDialog, SdkComponent } from './pages/sdk/sdk.component';
 import { SettingComponent, WarningLicenseDialog } from './pages/setting/setting.component';
 
 // ----------------------------------
@@ -46,6 +47,7 @@ export class AppRoutingModule {}
     Material.MdInputModule,
     Material.MdListModule,
     Material.MdProgressSpinnerModule,
+    Material.MdSnackBarModule,
     Material.MdSortModule,
     Material.MdTabsModule,
     Material.MdTableModule,
@@ -55,13 +57,14 @@ export class AppRoutingModule {}
     AppComponent,
     AvdComponent,
     GroupByPipe,
-    InstallDialogComponent,
+    OrderByPipe,
+    InstallDialog,
     SdkComponent,
     SettingComponent,
     WarningLicenseDialog
   ],
   entryComponents: [
-    InstallDialogComponent,
+    InstallDialog,
     WarningLicenseDialog
   ],
   providers: [],

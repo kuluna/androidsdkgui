@@ -19,8 +19,7 @@ export class SdkComponent implements OnInit {
   sdkSetting: AppSetting;
   displayedColumns = ['check', 'name', 'version', 'state'];
 
-  constructor(private dialog: MdDialog,
-              private router: Router) {}
+  constructor(private dialog: MdDialog, private router: Router) {}
 
   async ngOnInit() {
     // load settings
@@ -44,7 +43,7 @@ export class SdkComponent implements OnInit {
 
   async install(p: Package) {
     if (p.state == InstallStates.Available) {
-      const installing = this.dialog.open(InstallDialogComponent, { disableClose: true });
+      const installing = this.dialog.open(InstallDialog, { disableClose: true });
       await installPackageAsync(this.sdkSetting, p.rawName);
       installing.close();
       // reload
@@ -63,7 +62,7 @@ export class SdkComponent implements OnInit {
   </div>
   `
 })
-export class InstallDialogComponent {}
+export class InstallDialog {}
 
 export class PackageDataSource extends DataSource<Package> {
   constructor(private data: Package[]) {
