@@ -4,7 +4,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FormsModule } from '@angular/forms';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { HttpModule } from '@angular/http';
-import { MaterialModule } from '@angular/material';
+import * as Material from '@angular/material';
 import { RouterModule, Routes } from '@angular/router';
 
 import { GroupByPipe } from './services/groupby_pipe';
@@ -38,7 +38,18 @@ export class AppRoutingModule {}
     FormsModule,
     FlexLayoutModule,
     HttpModule,
-    MaterialModule
+    Material.MdButtonModule,
+    Material.MdCardModule,
+    Material.MdCheckboxModule,
+    Material.MdDialogModule,
+    Material.MdFormFieldModule,
+    Material.MdInputModule,
+    Material.MdListModule,
+    Material.MdProgressSpinnerModule,
+    Material.MdSortModule,
+    Material.MdTabsModule,
+    Material.MdTableModule,
+    Material.MdToolbarModule
   ],
   declarations: [
     AppComponent,
