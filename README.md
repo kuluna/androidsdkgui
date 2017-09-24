@@ -2,7 +2,7 @@ Android SDK GUI
 ---
 Reborn the Android SDK GUI Tool
 
-![demo](docs/images/demo.gif)
+![demo](docs/images/sdk.png)
 
 # Overview
 GUI Application wrapping Android SDK CUI tool (sdkmanager).  
@@ -37,7 +37,7 @@ Using Electron, it should work on any platforms.
   - [ ] Delete
   - [x] Update tools
   - [ ] Cancelling install/update
-  - [ ] Check licenses
+  - [x] Check licenses
 - [ ] AVD
 - [x] Proxy support
 - [ ] macOS keyboard shortcut
