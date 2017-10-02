@@ -82,7 +82,8 @@ export function parseList(stdout: string) {
       break;
     }
 
-    if (packages.findIndex(pkg => pkg.rawName === lines[pointer]) === -1) {
+    const index = packages.findIndex(pkg => pkg.rawName === lines[pointer]);
+    if (index === -1) {
       // Not installed
       const p = new Package();
       p.state = InstallStates.Available;
@@ -94,7 +95,7 @@ export function parseList(stdout: string) {
       packages.push(p);
     } else {
       // Already installed
-      const p = packages.find((value) => value.rawName == lines[pointer]);
+      const p = packages[index];
       if (p) {
         const rv = lines[pointer + 2].slice('    Remote Version: '.length).trim();
         if (cmpVersions(p.version, rv) < 0) {
@@ -109,26 +110,6 @@ export function parseList(stdout: string) {
     do {
       pointer += 1;
     } while (lines[pointer]);
-    pointer += 1;
-  }
-
-  // available updates
-  for (; pointer < lines.length; ) {
-    if (lines[pointer].startsWith('done')) {
-      break;
-    }
-
-    /*
-    const upRawName = lines[pointer];
-    const upLocalVersion = lines[pointer + 2].slice(20);
-    const upRemoteVersion = lines[pointer + 2].slice(20);
-
-    //skip
-    pointer += 2;
-    do {
-      pointer += 1;
-    } while (lines[pointer] && lines[pointer] === 'done');
-    */
     pointer += 1;
   }
 
