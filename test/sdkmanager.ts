@@ -24,6 +24,13 @@ describe('sdkmanager', () => {
     console.log(JSON.stringify(packages, null, 2));
   });
 
+  it('parse list3', () => {
+    const stdout = getList(3);
+    const packages = sdkManager.parseList(stdout);
+
+    console.log(JSON.stringify(packages, null, 2));
+  });
+
   it('not found license', async () => {
     const sdkSetting = new AppSetting();
     sdkSetting.sdkRootPath = __dirname;

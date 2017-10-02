@@ -32,8 +32,11 @@
           <ng-container mdColumnDef="state">
             <md-header-cell *mdHeaderCellDef fxFlex="10"></md-header-cell>
             <md-cell *mdCellDef="let e" fxFlex="10" style="text-align: center;">
-              <ng-container *ngIf="e.state === InstallState.Installed; else b">{{e.state}}</ng-container>
-              <ng-template #b><button (click)="install(e)" md-button color="accent">Install</button></ng-template>
+              <ng-container [ngSwitch]="e.state">
+                <div *ngSwitchCase="InstallState.Installed">{{e.state}}</div>
+                <div *ngSwitchCase="InstallState.Updateable"><button (click)="update(e)" md-button color="accent">Update</button></div>
+                <div *ngSwitchDefault><button (click)="install(e)" md-button color="accent">Install</button></div>
+              </ng-container>
             </md-cell>
           </ng-container>
 

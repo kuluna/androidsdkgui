@@ -50,6 +50,16 @@ export class SdkComponent implements OnInit {
       await this.ngOnInit();
     }
   }
+
+  async update(p: Package) {
+    if (p.state == InstallStates.Updateable) {
+      const installing = this.dialog.open(InstallDialog, { disableClose: true });
+      await installPackageAsync(this.sdkSetting, p.rawName);
+      installing.close();
+      // reload
+      await this.ngOnInit();
+    }
+  }
 }
 
 @Component({

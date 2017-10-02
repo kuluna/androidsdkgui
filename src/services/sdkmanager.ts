@@ -82,8 +82,8 @@ export function parseList(stdout: string) {
       break;
     }
 
-    // skip alrady installed
     if (packages.findIndex(pkg => pkg.rawName === lines[pointer]) === -1) {
+      // Not installed
       const p = new Package();
       p.state = InstallStates.Available;
       p.rawName = lines[pointer];
@@ -92,6 +92,16 @@ export function parseList(stdout: string) {
       p.version = lines[pointer + 2].slice(24);
 
       packages.push(p);
+    } else {
+      // Already installed
+      const p = packages.find((value) => value.rawName == lines[pointer]);
+      if (p) {
+        const rv = lines[pointer + 2].slice('    Remote Version: '.length).trim();
+        if (cmpVersions(p.version, rv) < 0) {
+            p.state = InstallStates.Updateable;
+            p.version = p.version + '(' + rv + ')';
+        }
+      }
     }
 
     pointer += 2;
@@ -177,6 +187,23 @@ async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTm
 function parsePackageName(name: string): [string, string] {
   const names = name.split(';');
   return [names[1] ? names.slice(1).join('; ') : names[0], names[0]];
+}
+
+// https://stackoverflow.com/a/16187766
+function cmpVersions (a:string, b:string) {
+    var i, diff;
+    var regExStrip0 = /(\.0+)+$/;
+    var segmentsA = a.replace(regExStrip0, '').split('.');
+    var segmentsB = b.replace(regExStrip0, '').split('.');
+    var l = Math.min(segmentsA.length, segmentsB.length);
+
+    for (i = 0; i < l; i++) {
+        diff = parseInt(segmentsA[i], 10) - parseInt(segmentsB[i], 10);
+        if (diff) {
+            return diff;
+        }
+    }
+    return segmentsA.length - segmentsB.length;
 }
 
 export class Package {
