@@ -46,6 +46,7 @@ export class AppRoutingModule {}
     Material.MdFormFieldModule,
     Material.MdInputModule,
     Material.MdListModule,
+    Material.MdProgressBarModule,
     Material.MdProgressSpinnerModule,
     Material.MdSnackBarModule,
     Material.MdSortModule,

@@ -27,11 +27,11 @@ export async function getListAsync(sdkSetting: AppSetting): Promise<Standard> {
 }
 
 /**
- * check done by sdkmanager.
+ * check done sdkmanager.
  */
 export async function checkDoneAsync(sdkSetting: AppSetting): Promise<boolean> {
   const std = await getListAsync(sdkSetting);
-  return /done\r?\n?$/.test(std.out);
+  return parseList(std.out).length >= 1;
 }
 
 /**
@@ -62,7 +62,8 @@ export function parseList(stdout: string) {
       break;
     }
 
-    const elements = lines[pointer].split('| ');
+    // split line (Path|Version|Description|Location)
+    const elements = lines[pointer].split('| ').map(e => e.trim());
 
     // set
     const p = new Package();
@@ -86,10 +87,12 @@ export function parseList(stdout: string) {
       break;
     }
 
-    const elements = lines[pointer].split('| ');
+    // split line (Path|Version|Description)
+    const elements = lines[pointer].split('| ').map(e => e.trim());
 
-    // skip alrady installed
-    if (packages.findIndex(pkg => pkg.rawName === elements[0]) === -1) {
+    const index = packages.findIndex(pkg => pkg.rawName === elements[0]);
+    if (index === -1) {
+      // Not installed
       const p = new Package();
       p.state = InstallStates.Available;
       p.rawName = elements[0];
@@ -98,22 +101,15 @@ export function parseList(stdout: string) {
       p.description = elements[2];
 
       packages.push(p);
+    } else {
+      // Already installed
+      const p = packages[index];
+      const rv = elements[1];
+      if (cmpVersions(p.version, rv) < 0) {
+          p.state = InstallStates.Updateable;
+          p.version = p.version + '(' + rv + ')';
+      }
     }
-  }
-
-  // available updates
-  for (; pointer < lines.length; pointer += 1) {
-    /*
-    const upRawName = lines[pointer];
-    const upLocalVersion = lines[pointer + 2].slice(20);
-    const upRemoteVersion = lines[pointer + 2].slice(20);
-
-    //skip
-    pointer += 2;
-    do {
-      pointer += 1;
-    } while (lines[pointer] && lines[pointer] === 'done');
-    */
   }
 
   return packages;
@@ -128,13 +124,11 @@ export async function installPackageAsync(sdkSetting: AppSetting, packageRawName
   // before copy tools directory
   const tempDir = Path.join(sdkSetting.sdkRootPath, 'temp');
   await copy(Path.join(sdkSetting.sdkRootPath, 'tools'), tempDir);
-
-  const std = await execSdkManagerAsync(sdkSetting, [`${packageRawName}`], true);
+  // install
+  await execSdkManagerAsync(sdkSetting, [`${packageRawName}`], true);
 
   // remove temp dir
   await remove(tempDir);
-
-  return /done\r?\n?$/.test(std.out);
 }
 
 export function getSdkManagerPath(sdkSetting: AppSetting, useTmpToolsDir?: boolean) {
@@ -171,6 +165,22 @@ async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTm
 function parsePackageName(name: string): [string, string] {
   const names = name.split(';');
   return [names[1] ? names.slice(1).join('; ') : names[0], names[0]];
+}
+
+// https://stackoverflow.com/a/16187766
+function cmpVersions (a: string, b: string) {
+    const regExStrip0 = /(\.0+)+$/;
+    const segmentsA = a.replace(regExStrip0, '').split('.');
+    const segmentsB = b.replace(regExStrip0, '').split('.');
+    const l = Math.min(segmentsA.length, segmentsB.length);
+
+    for (let i = 0; i < l; i++) {
+        const diff = parseInt(segmentsA[i], 10) - parseInt(segmentsB[i], 10);
+        if (diff) {
+            return diff;
+        }
+    }
+    return segmentsA.length - segmentsB.length;
 }
 
 export class Package {
