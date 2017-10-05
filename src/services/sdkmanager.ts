@@ -44,70 +44,65 @@ export function parseList(stdout: string) {
   let pointer = 0;
 
   // skip
-  for (; pointer <= lines.length; pointer += 1) {
-    if (lines[pointer].startsWith('done')) {
-      return packages;
-    } else if (lines[pointer].startsWith('Installed packages:')) {
-      pointer += 2;
+  for (; pointer < lines.length; pointer += 1) {
+    if (lines[pointer].endsWith('Installed packages:')) {
+      pointer += 3;
       break;
     }
   }
 
   // installed packages
-  for (; pointer <= lines.length; pointer += 5) {
-    if (lines[pointer].startsWith('done')) {
-      return packages;
-    } else if (lines[pointer].startsWith('Available Packages:')) {
-      pointer += 2;
+  for (; pointer < lines.length; pointer += 1) {
+    // skip blank
+    if (lines[pointer] === '') {
+      pointer += 1;
+    }
+    if (lines[pointer].startsWith('Available Packages:')) {
+      pointer += 3;
       break;
     }
 
+    const elements = lines[pointer].split('| ');
+
+    // set
     const p = new Package();
     p.state = InstallStates.Installed;
-    p.rawName = lines[pointer];
+    p.rawName = elements[0];
     [p.name, p.category] = parsePackageName(p.rawName);
-    p.description = lines[pointer + 1].slice(24);
-    p.version = lines[pointer + 2].slice(24);
-    p.installedLocation = lines[pointer + 3].slice(24);
+    p.version = elements[1];
+    p.description = elements[2];
 
     packages.push(p);
   }
 
   // available packages
-  for (; pointer <= lines.length; ) {
-    if (lines[pointer].startsWith('done')) {
-      return packages;
-    } else if (lines[pointer].startsWith('Available Updates:')) {
-      pointer += 2;
+  for (; pointer < lines.length; pointer += 1) {
+    // skip blank
+    if (lines[pointer] === '') {
+      pointer += 1;
+    }
+    if (lines[pointer].startsWith('Available Updates:')) {
+      pointer += 3;
       break;
     }
 
+    const elements = lines[pointer].split('| ');
+
     // skip alrady installed
-    if (packages.findIndex(pkg => pkg.rawName === lines[pointer]) === -1) {
+    if (packages.findIndex(pkg => pkg.rawName === elements[0]) === -1) {
       const p = new Package();
       p.state = InstallStates.Available;
-      p.rawName = lines[pointer];
+      p.rawName = elements[0];
       [p.name, p.category] = parsePackageName(p.rawName);
-      p.description = lines[pointer + 1].slice(24);
-      p.version = lines[pointer + 2].slice(24);
+      p.version = elements[1];
+      p.description = elements[2];
 
       packages.push(p);
     }
-
-    pointer += 2;
-    // skip
-    do {
-      pointer += 1;
-    } while (lines[pointer]);
-    pointer += 1;
   }
 
   // available updates
-  for (; pointer < lines.length; ) {
-    if (lines[pointer].startsWith('done')) {
-      break;
-    }
-
+  for (; pointer < lines.length; pointer += 1) {
     /*
     const upRawName = lines[pointer];
     const upLocalVersion = lines[pointer + 2].slice(20);
@@ -119,7 +114,6 @@ export function parseList(stdout: string) {
       pointer += 1;
     } while (lines[pointer] && lines[pointer] === 'done');
     */
-    pointer += 1;
   }
 
   return packages;
@@ -159,7 +153,7 @@ export function getSdkManagerPath(sdkSetting: AppSetting, useTmpToolsDir?: boole
 async function execSdkManagerAsync(sdkSetting: AppSetting, args: string[], useTmpToolsDir?: boolean) {
   const file = getSdkManagerPath(sdkSetting, useTmpToolsDir);
 
-  const commonArgs = ['--verbose', `--sdk_root=${sdkSetting.sdkRootPath}`];
+  const commonArgs = [`--sdk_root=${sdkSetting.sdkRootPath}`];
   if (sdkSetting.useProxy) {
     commonArgs.push('--proxy=http');
     commonArgs.push(`--proxy_host=${sdkSetting.proxy}`);
@@ -187,7 +181,6 @@ export class Package {
   description: string;
   version: string;
   state: InstallStates;
-  installedLocation: string | null;
 }
 
 export enum InstallStates {
