@@ -12,8 +12,10 @@ import { OrderByPipe } from './pipes/orderby.pipe';
 
 import { AppComponent } from './app.component';
 import { AvdComponent } from './pages/avd/avd.component';
-import { InstallDialog, SdkComponent } from './pages/sdk/sdk.component';
-import { SettingComponent, WarningLicenseDialog } from './pages/setting/setting.component';
+import { SdkComponent } from './pages/sdk/sdk.component';
+import { SettingComponent } from './pages/setting/setting.component';
+
+import { InstallDialog, WarningLicenseDialog } from './dialogs/dialog.component';
 
 // ----------------------------------
 // App routing

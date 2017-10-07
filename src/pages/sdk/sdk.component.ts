@@ -6,6 +6,7 @@ import * as settings from 'electron-settings';
 import { Observable } from 'rxjs/Rx';
 
 import { AppSetting } from '../../models/models';
+import { InstallDialog } from '../../dialogs/dialog.component';
 import { getListAsync, installPackageAsync, InstallStates, parseList, Package } from '../../services/sdkmanager';
 
 @Component({
@@ -22,6 +23,7 @@ export class SdkComponent implements OnInit {
   constructor(private dialog: MdDialog, private router: Router) {}
 
   async ngOnInit() {
+    this.updating = true;
     // load settings
     const values: any = settings.get('AppSetting', new AppSetting());
     if (!values.sdkRootPath) {
@@ -42,27 +44,13 @@ export class SdkComponent implements OnInit {
   }
 
   async install(p: Package) {
-    if (p.state == InstallStates.Available) {
-      const installing = this.dialog.open(InstallDialog, { disableClose: true });
-      await installPackageAsync(this.sdkSetting, p.rawName);
-      installing.close();
-      // reload
-      await this.ngOnInit();
-    }
+    const installing = this.dialog.open(InstallDialog, { disableClose: true });
+    await installPackageAsync(this.sdkSetting, p.rawName);
+    installing.close();
+    // reload
+    await this.ngOnInit();
   }
 }
-
-@Component({
-  selector: 'app-install-dialog',
-  template:
-  `
-  <div fxLayout="column" fxLayoutAlign=" center">
-    <h2>Installing...</h2>
-    <md-progress-bar mode="indeterminate"></md-progress-bar>
-  </div>
-  `
-})
-export class InstallDialog {}
 
 export class PackageDataSource extends DataSource<Package> {
   constructor(private data: Package[]) {

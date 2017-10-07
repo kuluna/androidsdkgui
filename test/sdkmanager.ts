@@ -5,13 +5,16 @@ import * as Path from 'path';
 import * as sdkManager from '../src/services/sdkmanager';
 import { AppSetting } from '../src/models/models';
 
-function getList(num: number) {
-  return readFileSync(`./test/assets/sdkmanager/list${num}.txt`, 'utf-8');
-}
-
 describe('sdkmanager', () => {
-  it('parse list1', () => {
-    const stdout = getList(1);
+  it('parse --list v26.0.1', () => {
+    const stdout = readFileSync(`./test/assets/sdkmanager/list_v26.0.1.txt`, 'utf-8');
+    const packages = sdkManager.parseList(stdout);
+
+    console.log(JSON.stringify(packages, null, 2));
+  });
+
+  it('parse --list v26.1.1', () => {
+    const stdout = readFileSync(`./test/assets/sdkmanager/list_v26.1.1.txt`, 'utf-8');
     const packages = sdkManager.parseList(stdout);
 
     console.log(JSON.stringify(packages, null, 2));
