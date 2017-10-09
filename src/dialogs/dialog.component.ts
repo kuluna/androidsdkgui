@@ -1,25 +1,25 @@
 import { Component, Inject } from '@angular/core';
-import { MD_DIALOG_DATA } from '@angular/material';
+import { MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'app-dialog-warn-license',
   template:
   `
-  <h2 md-dialog-title>Accept Android SDK License!</h2>
-  <md-dialog-content>
+  <h2 mat-dialog-title>Accept Android SDK License!</h2>
+  <mat-dialog-content>
     <p>License is not accepted.</p>
     <p>Can not be installed since their licenses or those of the packages they depend on were not accepted.</p>
     <code>
       {{data.sdkManagerPath}} --licenses
     </code>
-  </md-dialog-content>
-  <md-dialog-actions fxLayout="row" fxLayoutAlign="end ">
-    <button [md-dialog-close]="true" md-button color="accent">CLOSE</button>
-  </md-dialog-actions>
+  </mat-dialog-content>
+  <mat-dialog-actions fxLayout="row" fxLayoutAlign="end ">
+    <button [mat-dialog-close]="true" mat-button color="accent">CLOSE</button>
+  </mat-dialog-actions>
   `
 })
 export class WarningLicenseDialog {
-  constructor(@Inject(MD_DIALOG_DATA) public data: any) {}
+  constructor(@Inject(MAT_DIALOG_DATA) public data: any) {}
 }
 
 @Component({
@@ -28,7 +28,7 @@ export class WarningLicenseDialog {
   `
   <div fxLayout="column" fxLayoutAlign=" center">
     <h2>Installing...</h2>
-    <md-progress-bar mode="indeterminate"></md-progress-bar>
+    <mat-progress-bar mode="indeterminate"></mat-progress-bar>
   </div>
   `
 })

@@ -1,27 +1,27 @@
 <h1>Setting</h1>
 
-<md-card style="margin: 16px;">
+<mat-card style="margin: 16px;">
   <form #settingForm="ngForm" (ngSubmit)="onSubmit(settingForm.value)">
-    <md-card-content fxLayout="column">
-        <md-form-field class="fill-width">
-          <input name="sdkRootPath" required placeholder="SDK Root Path" [(ngModel)]="appSetting.sdkRootPath" mdInput>
-          <md-error>Invalid Android SDK directory path.</md-error>
-        </md-form-field>
+    <mat-card-content fxLayout="column">
+        <mat-form-field class="fill-width">
+          <input name="sdkRootPath" required placeholder="SDK Root Path" [(ngModel)]="appSetting.sdkRootPath" matInput>
+          <mat-error>Invalid Android SDK directory path.</mat-error>
+        </mat-form-field>
 
         <div fxLayout="column" style="margin: 16px 0">
-          <md-checkbox name="useProxy" [(ngModel)]="appSetting.useProxy">Use HTTP Proxy</md-checkbox>
+          <mat-checkbox name="useProxy" [(ngModel)]="appSetting.useProxy">Use HTTP Proxy</mat-checkbox>
           <strong>(Android SDK) Authentication proxy does not support.</strong>
         </div>
-        <md-form-field class="fill-width">
-          <input name="proxy" placeholder="HTTP proxy" [(ngModel)]="appSetting.proxy" [disabled]="!appSetting.useProxy" mdInput>
-        </md-form-field>
-        <md-form-field class="fill-width">
-          <input type="number" min="0" name="port" placeholder="Proxy port" [(ngModel)]="appSetting.port" [disabled]="!appSetting.useProxy" mdInput>
-        </md-form-field>
-      </md-card-content>
-      <md-card-actions fxLayout="row" fxLayoutAlign="end center">
-        <div [hidden]="!updating"><md-spinner style="width: 24px;height: 24px"></md-spinner></div>
-        <button type="submit" [disabled]="settingForm.form.invalid || updating" md-raised-button color="primary">UPDATE</button>
-      </md-card-actions>
+        <mat-form-field class="fill-width">
+          <input name="proxy" placeholder="HTTP proxy" [(ngModel)]="appSetting.proxy" [disabled]="!appSetting.useProxy" matInput>
+        </mat-form-field>
+        <mat-form-field class="fill-width">
+          <input type="number" min="0" name="port" placeholder="Proxy port" [(ngModel)]="appSetting.port" [disabled]="!appSetting.useProxy" matInput>
+        </mat-form-field>
+      </mat-card-content>
+      <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
+        <div [hidden]="!updating"><mat-spinner style="width: 24px;height: 24px"></mat-spinner></div>
+        <button type="submit" [disabled]="settingForm.form.invalid || updating" mat-raised-button color="primary">UPDATE</button>
+      </mat-card-actions>
   </form>
-</md-card>
+</mat-card>

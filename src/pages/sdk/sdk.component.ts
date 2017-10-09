@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { DataSource } from '@angular/cdk/collections';
-import { MdDialog } from '@angular/material';
+import { MatDialog } from '@angular/material';
 import { Router } from '@angular/router';
 import * as settings from 'electron-settings';
 import { Observable } from 'rxjs/Rx';
@@ -20,7 +20,7 @@ export class SdkComponent implements OnInit {
   sdkSetting: AppSetting;
   displayedColumns = ['check', 'name', 'version', 'state'];
 
-  constructor(private dialog: MdDialog, private router: Router) {}
+  constructor(private dialog: MatDialog, private router: Router) {}
 
   async ngOnInit() {
     this.updating = true;
