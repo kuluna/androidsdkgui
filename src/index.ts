@@ -24,6 +24,25 @@ const createWindow = async () => {
     mainWindow.webContents.openDevTools();
   }
 
+  // menus
+  const menu = Menu.buildFromTemplate([
+    {
+      label: 'Edit',
+      submenu: [
+        {role: 'undo'},
+        {role: 'redo'},
+        {type: 'separator'},
+        {role: 'cut'},
+        {role: 'copy'},
+        {role: 'paste'},
+        {role: 'pasteandmatchstyle'},
+        {role: 'delete'},
+        {role: 'selectall'}
+      ]
+    }
+  ]);
+  Menu.setApplicationMenu(menu);
+
   // Emitted when the window is closed.
   mainWindow.on('closed', () => {
     // Dereference the window object, usually you would store windows
@@ -54,22 +73,3 @@ app.on('activate', () => {
     createWindow();
   }
 });
-
-// menus
-const menu = Menu.buildFromTemplate([
-  {
-    label: 'Edit',
-    submenu: [
-      {role: 'undo'},
-      {role: 'redo'},
-      {type: 'separator'},
-      {role: 'cut'},
-      {role: 'copy'},
-      {role: 'paste'},
-      {role: 'pasteandmatchstyle'},
-      {role: 'delete'},
-      {role: 'selectall'}
-    ]
-  }
-]);
-// Menu.setApplicationMenu(menu);
