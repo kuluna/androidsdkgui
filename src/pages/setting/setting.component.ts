@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MdDialog, MdSnackBar } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import * as settings from 'electron-settings';
 
 import * as sdkManager from '../../services/sdkmanager';
@@ -15,8 +15,8 @@ export class SettingComponent implements OnInit {
   appSetting: AppSetting = new AppSetting();
   updating = false;
 
-  constructor(public snackBar: MdSnackBar,
-              public dialog: MdDialog) {}
+  constructor(public snackBar: MatSnackBar,
+              public dialog: MatDialog) {}
 
   ngOnInit() {
     const values: any = settings.get('AppSetting', new AppSetting());

@@ -1,49 +1,49 @@
 <h1>Android SDK</h1>
 
 <div *ngIf="updating; else list" fxLayout="column" fxLayoutAlign=" center">
-  <md-spinner></md-spinner>
+  <mat-spinner></mat-spinner>
   <h1>Loading...</h1>
 </div>
 
 <ng-template #list>
-  <md-card style="margin: 16px;">
-    <md-list>
+  <mat-card style="margin: 16px;">
+    <mat-list>
       <div *ngFor="let category of packages | groupBy: 'category'">
         <h2>{{category.key}}</h2>
-        <md-table [dataSource]="createDataSource(category.value)" mdSort>
+        <mat-table [dataSource]="createDataSource(category.value)" matSort>
           <!-- Check Column -->
-          <ng-container mdColumnDef="check">
-              <md-header-cell *mdHeaderCellDef fxFlex="10"></md-header-cell>
-            <md-cell *mdCellDef="let e" fxFlex="10">
-              <md-checkbox disabled [checked]="e.state === InstallState.Installed"></md-checkbox>
-            </md-cell>
+          <ng-container matColumnDef="check">
+              <mat-header-cell *matHeaderCellDef fxFlex="10"></mat-header-cell>
+            <mat-cell *matCellDef="let e" fxFlex="10">
+              <mat-checkbox disabled [checked]="e.state === InstallState.Installed"></mat-checkbox>
+            </mat-cell>
           </ng-container>
           <!-- Name Column -->
-          <ng-container mdColumnDef="name">
-            <md-header-cell md-sort-header *mdHeaderCellDef fxFlex="70">Name</md-header-cell>
-            <md-cell *mdCellDef="let e" fxFlex="70">{{e.name}}</md-cell>
+          <ng-container matColumnDef="name">
+            <mat-header-cell mat-sort-header *matHeaderCellDef fxFlex="70">Name</mat-header-cell>
+            <mat-cell *matCellDef="let e" fxFlex="70">{{e.name}}</mat-cell>
           </ng-container>
            <!-- Version Column -->
-           <ng-container mdColumnDef="version">
-            <md-header-cell *mdHeaderCellDef fxFlex="10">Version</md-header-cell>
-            <md-cell *mdCellDef="let e" fxFlex="10">{{e.version}}</md-cell>
+           <ng-container matColumnDef="version">
+            <mat-header-cell *matHeaderCellDef fxFlex="10">Version</mat-header-cell>
+            <mat-cell *matCellDef="let e" fxFlex="10">{{e.version}}</mat-cell>
           </ng-container>
           <!-- State Column -->
-          <ng-container mdColumnDef="state">
-            <md-header-cell *mdHeaderCellDef fxFlex="10"></md-header-cell>
-            <md-cell *mdCellDef="let e" fxFlex="10" style="text-align: center;">
+          <ng-container matColumnDef="state">
+            <mat-header-cell *matHeaderCellDef fxFlex="10"></mat-header-cell>
+            <mat-cell *matCellDef="let e" fxFlex="10" style="text-align: center;">
               <ng-container [ngSwitch]="e.state">
                 <div *ngSwitchCase="InstallState.Installed">{{e.state}}</div>
-                <div *ngSwitchCase="InstallState.Updateable"><button (click)="install(e)" md-button color="accent">Update</button></div>
-                <div *ngSwitchDefault><button (click)="install(e)" md-button color="accent">Install</button></div>
+                <div *ngSwitchCase="InstallState.Updateable"><button (click)="install(e)" mat-button color="accent">Update</button></div>
+                <div *ngSwitchDefault><button (click)="install(e)" mat-button color="accent">Install</button></div>
               </ng-container>
-            </md-cell>
+            </mat-cell>
           </ng-container>
 
-          <md-header-row *mdHeaderRowDef="displayedColumns"></md-header-row>
-          <md-row *mdRowDef="let row; columns: displayedColumns;"></md-row>
-        </md-table>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+        </mat-table>
       </div>
-    </md-list>
-  </md-card>
+    </mat-list>
+  </mat-card>
 </ng-template>
