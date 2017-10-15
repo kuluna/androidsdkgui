@@ -20,7 +20,7 @@
         </mat-form-field>
       </mat-card-content>
       <mat-card-actions fxLayout="row" fxLayoutAlign="end center">
-        <div [hidden]="!updating"><mat-spinner style="width: 24px;height: 24px"></mat-spinner></div>
+        <div [hidden]="!updating"><mat-spinner [diameter]="24" [strokeWidth]="2"></mat-spinner></div>
         <button type="submit" [disabled]="settingForm.form.invalid || updating" mat-raised-button color="primary">UPDATE</button>
       </mat-card-actions>
   </form>
