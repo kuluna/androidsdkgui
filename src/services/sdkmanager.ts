@@ -81,6 +81,7 @@ export function parseList(stdout: string) {
     // skip blank
     if (lines[pointer] === '') {
       pointer += 1;
+      continue;
     }
     if (lines[pointer].startsWith('Available Updates:')) {
       pointer += 3;
