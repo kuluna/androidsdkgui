@@ -13,7 +13,7 @@ const isWindows = process.platform === 'win32';
 export async function checkLicenseAsync(sdkSetting: AppSetting): Promise<boolean> {
   const licensePath = Path.join(sdkSetting.sdkRootPath, 'licenses');
   // read license files
-  const files = await readdir(licensePath).catch(e => []);
+  const files = await readdir(licensePath).catch(e => [] as string[]);
   // at least android sdk license exists
   return files.findIndex(file => /^android-sdk-license$/.test(file)) >= 0;
 }
@@ -114,6 +114,20 @@ export function parseList(stdout: string) {
   }
 
   return packages;
+}
+
+/**
+ * sorting packages by name
+ * @param packages packages
+ * @param order 'asc' | 'desc' (default: 'desc')
+ */
+export function sort(packages: Package[], order: String = 'desc'): Package[] {
+  return packages.sort((a, b) => {
+    const nameA = a.rawName.toLowerCase();
+    const nameB = b.rawName.toLowerCase();
+
+    return (nameA < nameB ? -1 : 1) * (order === 'asc' ? 1 : -1);
+  });
 }
 
 /**

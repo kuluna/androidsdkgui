@@ -7,7 +7,7 @@ import { Observable } from 'rxjs/Rx';
 
 import { AppSetting } from '../../models/models';
 import { InstallDialog } from '../../dialogs/dialog.component';
-import { getListAsync, installPackageAsync, InstallStates, parseList, Package } from '../../services/sdkmanager';
+import { getListAsync, installPackageAsync, InstallStates, parseList, Package, sort } from '../../services/sdkmanager';
 
 @Component({
   selector: 'app-sdk',
@@ -34,7 +34,7 @@ export class SdkComponent implements OnInit {
 
     // get package list
     const list = await getListAsync(this.sdkSetting);
-    this.packages = parseList(list.out);
+    this.packages = sort(parseList(list.out));
 
     this.updating = false;
   }

@@ -10,7 +10,7 @@
     <mat-list>
       <div *ngFor="let category of packages | groupBy: 'category'">
         <h2>{{category.key}}</h2>
-        <mat-table [dataSource]="createDataSource(category.value)" matSort>
+        <mat-table [dataSource]="createDataSource(category.value)">
           <!-- Check Column -->
           <ng-container matColumnDef="check">
               <mat-header-cell *matHeaderCellDef fxFlex="10"></mat-header-cell>
@@ -20,7 +20,7 @@
           </ng-container>
           <!-- Name Column -->
           <ng-container matColumnDef="name">
-            <mat-header-cell mat-sort-header *matHeaderCellDef fxFlex="70">Name</mat-header-cell>
+            <mat-header-cell *matHeaderCellDef fxFlex="70">Name</mat-header-cell>
             <mat-cell *matCellDef="let e" fxFlex="70">{{e.name}}</mat-cell>
           </ng-container>
            <!-- Version Column -->
